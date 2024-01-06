@@ -75,9 +75,9 @@ public class Budget
         return new Period(FirstDay(), LastDay());
     }
 
-    public int DailyAmount()
+    public decimal DailyAmount()
     {
-        return Amount / Days();
+        return (decimal)Amount / Days();
     }
 
     public int Days()
@@ -97,7 +97,7 @@ public class Budget
         return DateTime.ParseExact(YearMonth + Days(), "yyyyMMdd", null);
     }
 
-    public int OverlappingAmount(Period period)
+    public decimal OverlappingAmount(Period period)
     {
         return period.OverlappingDays(CreatePeriod()) * DailyAmount();
     }
