@@ -49,18 +49,18 @@ public class BudgetService
         var budgets = _budgetRepo.GetAll();
 
         var totalAmount = 0m;
-        if (start.Year == end.Year && start.Month == end.Month)
-        {
-            var currentBudget = budgets.SingleOrDefault(b => b.YearMonth == start.ToString("yyyyMM"));
-            if (currentBudget != null)
-            {
-                var overlappingDays = end.Day - start.Day + 1;
-                return overlappingDays * currentBudget.DailyAmount();
-            }
-        }
-        else
-        {
-        }
+        // if (start.Year == end.Year && start.Month == end.Month)
+        // {
+        //     var currentBudget = budgets.SingleOrDefault(b => b.YearMonth == start.ToString("yyyyMM"));
+        //     if (currentBudget != null)
+        //     {
+        //         var overlappingDays = end.Day - start.Day + 1;
+        //         return overlappingDays * currentBudget.DailyAmount();
+        //     }
+        // }
+        // else
+        // {
+        // }
 
         var period = new Period(start, end);
         foreach (var budget in budgets)
