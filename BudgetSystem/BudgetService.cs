@@ -21,9 +21,7 @@ public class BudgetService
         var totalAmount = 0m;
         foreach (var budget in budgets)
         {
-            var year = int.Parse(budget.YearMonth.Substring(0, 4));
-            var month = int.Parse(budget.YearMonth.Substring(4, 2));
-            var days = DateTime.DaysInMonth(year, month);
+            var days = DaysOfBudget(budget);
 
             if (start.Year == end.Year && start.Month == end.Month)
             {
@@ -59,6 +57,13 @@ public class BudgetService
         }
 
         return totalAmount;
+    }
+
+    private static int DaysOfBudget(Budget budget)
+    {
+        var year = int.Parse(budget.YearMonth.Substring(0, 4));
+        var month = int.Parse(budget.YearMonth.Substring(4, 2));
+        return DateTime.DaysInMonth(year, month);
     }
 }
 
