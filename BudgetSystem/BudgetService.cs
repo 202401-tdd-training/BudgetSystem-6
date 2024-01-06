@@ -28,7 +28,7 @@ public class BudgetService
         //                    DailyAmount = s.Amount / days
         //                };
         //     });
-        var data = new List<DailyAmountObject>();
+        var dailyAmountObjects = new List<DailyAmountObject>();
 
         foreach (var budget in budgets)
         {
@@ -41,39 +41,38 @@ public class BudgetService
                                         Month = month,
                                         DailyAmount = budget.Amount / days
                                     };
-            data.Add(dailyAmountObject);
+            dailyAmountObjects.Add(dailyAmountObject);
         }
 
-        List<DateResult>? dayRange;
-        List<DateResult> result = new List<DateResult>();
+        List<DateResult> dateRange = new List<DateResult>();
 
         if (start.Year == end.Year && start.Month == end.Month)
-            dayRange = new List<DateResult>()
-                       {
-                           new DateResult()
-                           {
-                               Year = start.Year,
-                               Month = start.Month,
-                               Days = end.Day - start.Day + 1
-                           }
-                       };
+            dateRange = new List<DateResult>()
+                        {
+                            new DateResult()
+                            {
+                                Year = start.Year,
+                                Month = start.Month,
+                                Days = end.Day - start.Day + 1
+                            }
+                        };
         else
         {
             var startDays = DateTime.DaysInMonth(start.Year, start.Month);
 
-            result.Add(new DateResult()
-                       {
-                           Year = start.Year,
-                           Month = start.Month,
-                           Days = startDays - start.Day + 1
-                       });
+            dateRange.Add(new DateResult()
+                          {
+                              Year = start.Year,
+                              Month = start.Month,
+                              Days = startDays - start.Day + 1
+                          });
 
-            result.Add(new DateResult()
-                       {
-                           Year = end.Year,
-                           Month = end.Month,
-                           Days = end.Day
-                       });
+            dateRange.Add(new DateResult()
+                          {
+                              Year = end.Year,
+                              Month = end.Month,
+                              Days = end.Day
+                          });
 
             var secondMonth = start.AddMonths(1);
 
@@ -82,23 +81,21 @@ public class BudgetService
                 if (date.Year == end.Year && date.Month == end.Month)
                     break;
 
-                result.Add(new DateResult()
-                           {
-                               Year = date.Year,
-                               Month = date.Month,
-                               Days = DateTime.DaysInMonth(date.Year, date.Month)
-                           });
+                dateRange.Add(new DateResult()
+                              {
+                                  Year = date.Year,
+                                  Month = date.Month,
+                                  Days = DateTime.DaysInMonth(date.Year, date.Month)
+                              });
             }
-
-            dayRange = result;
         }
 
-        return dayRange.Join(data,
-                             day => new { day.Year, day.Month },
-                             dd => new { dd.Year, dd.Month },
-                             (day, dd) => dd.DailyAmount * day.Days
-                       )
-                       .Sum();
+        return dateRange.Join(dailyAmountObjects,
+                              day => new { day.Year, day.Month },
+                              dd => new { dd.Year, dd.Month },
+                              (day, dd) => dd.DailyAmount * day.Days
+                        )
+                        .Sum();
     }
 
     private List<DateResult> GetMonthsWithDaysInRange(DateTime startDate, DateTime endDate)
