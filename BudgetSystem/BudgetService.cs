@@ -46,24 +46,24 @@ public class BudgetService
         return totalAmount;
     }
 
-    private static int OverlappingDays(DateTime start, DateTime end, Budget currentBudget)
+    private static int OverlappingDays(DateTime start, DateTime end, Budget budget)
     {
         DateTime overlappingEnd;
         DateTime overlappingStart;
-        if (currentBudget.YearMonth == start.ToString("yyyyMM"))
+        if (budget.YearMonth == start.ToString("yyyyMM"))
         {
-            overlappingEnd = currentBudget.LastDay();
+            overlappingEnd = budget.LastDay();
             overlappingStart = start;
         }
-        else if (currentBudget.YearMonth == end.ToString("yyyyMM"))
+        else if (budget.YearMonth == end.ToString("yyyyMM"))
         {
             overlappingEnd = end;
-            overlappingStart = currentBudget.FirstDay();
+            overlappingStart = budget.FirstDay();
         }
         else
         {
-            overlappingEnd = currentBudget.LastDay();
-            overlappingStart = currentBudget.FirstDay();
+            overlappingEnd = budget.LastDay();
+            overlappingStart = budget.FirstDay();
         }
 
         var overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
