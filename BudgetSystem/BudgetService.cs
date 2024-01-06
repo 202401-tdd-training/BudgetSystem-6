@@ -21,7 +21,7 @@ public class BudgetService
         var totalAmount = 0m;
         foreach (var budget in budgets)
         {
-            var days = budget.DaysOfBudget();
+            var days = budget.Days();
 
             if (start.Year == end.Year && start.Month == end.Month)
             {
@@ -70,7 +70,7 @@ public class Budget
     public int Amount { get; set; }
     public string YearMonth { get; set; }
 
-    public int DaysOfBudget()
+    public int Days()
     {
         var year = int.Parse(YearMonth.Substring(0, 4));
         var month = int.Parse(YearMonth.Substring(4, 2));
