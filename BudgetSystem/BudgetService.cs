@@ -58,15 +58,7 @@ public class BudgetService
             var period = new Period(start, end);
             foreach (var budget in budgets)
             {
-                // }
-                // var nextMonthOfEnd = new DateTime(end.Year, end.Month, 1).AddMonths(1);
-                // for (var currentMonth = start; currentMonth < nextMonthOfEnd; currentMonth.AddMonths(1))
-                // {
-                //     var currentBudget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
-                //     if (currentBudget != null)
-                //     {
                 totalAmount += budget.OverlappingAmount(period);
-                // }
             }
         }
 
