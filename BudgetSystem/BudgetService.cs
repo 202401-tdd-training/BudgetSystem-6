@@ -38,17 +38,18 @@ public class BudgetService
                     {
                         var startDays = DateTime.DaysInMonth(start.Year, start.Month);
                         var overlappingDays = startDays - start.Day + 1;
-                        totalAmount += overlappingDays * (budget.Amount / budget.Days());
+                        totalAmount += overlappingDays * budget.DailyAmount();
+                        // totalAmount += overlappingDays * (budget.Amount / budget.Days());
                     }
                     else if (budget.YearMonth == end.ToString("yyyyMM"))
                     {
                         var overlappingDays = end.Day;
-                        totalAmount += overlappingDays * (budget.Amount / budget.Days());
+                        totalAmount += overlappingDays * budget.DailyAmount();
                     }
                     else if (budget.YearMonth == currentMonth.ToString("yyyyMM"))
                     {
                         var overlappingDays = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
-                        totalAmount += overlappingDays * (budget.Amount / budget.Days());
+                        totalAmount += overlappingDays * budget.DailyAmount();
                     }
                 }
             }
