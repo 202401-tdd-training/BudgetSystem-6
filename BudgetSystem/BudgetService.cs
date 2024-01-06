@@ -26,7 +26,7 @@ public class BudgetService
                 if (budget.YearMonth == start.ToString("yyyyMM"))
                 {
                     var overlappingDays = end.Day - start.Day + 1;
-                    return overlappingDays * DailyAmount(budget);
+                    return overlappingDays * budget.DailyAmount();
                 }
             }
             else
@@ -56,11 +56,6 @@ public class BudgetService
 
         return totalAmount;
     }
-
-    private static int DailyAmount(Budget budget)
-    {
-        return budget.Amount / budget.Days();
-    }
 }
 
 public interface IBudgetRepo
@@ -72,6 +67,11 @@ public class Budget
 {
     public int Amount { get; set; }
     public string YearMonth { get; set; }
+
+    public int DailyAmount()
+    {
+        return Amount / Days();
+    }
 
     public int Days()
     {
