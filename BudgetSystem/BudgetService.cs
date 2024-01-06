@@ -65,43 +65,53 @@ public class BudgetService
                 //                   });
                 // }
                 // else
-                if (budget.YearMonth == end.ToString("yyyyMM"))
+                // if (budget.YearMonth == end.ToString("yyyyMM"))
+                // {
+                //     dateRange.Add(new DateResult()
+                //                   {
+                //                       Year = end.Year,
+                //                       Month = end.Month,
+                //                       Days = end.Day
+                //                   });
+                // }
+                // else
+                // {
+                var nextMonthOfEnd = new DateTime(end.Year, end.Month, 1).AddMonths(1);
+                for (var currentMonth = start; currentMonth < nextMonthOfEnd; currentMonth.AddMonths(1))
                 {
-                    dateRange.Add(new DateResult()
-                                  {
-                                      Year = end.Year,
-                                      Month = end.Month,
-                                      Days = end.Day
-                                  });
-                }
-                else
-                {
-                    for (var currentMonth = start; currentMonth < end; currentMonth.AddMonths(1))
-                    {
-                        if (currentMonth.Year == end.Year && currentMonth.Month == end.Month)
-                            break;
+                    if (currentMonth.Year == end.Year && currentMonth.Month == end.Month)
+                        break;
 
-                        if (budget.YearMonth == start.ToString("yyyyMM"))
-                        {
-                            var startDays = DateTime.DaysInMonth(start.Year, start.Month);
-                            dateRange.Add(new DateResult()
-                                          {
-                                              Year = start.Year,
-                                              Month = start.Month,
-                                              Days = startDays - start.Day + 1
-                                          });
-                        }
-                        else
-                        {
-                            dateRange.Add(new DateResult()
-                                          {
-                                              Year = currentMonth.Year,
-                                              Month = currentMonth.Month,
-                                              Days = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month)
-                                          });
-                        }
+                    if (budget.YearMonth == start.ToString("yyyyMM"))
+                    {
+                        var startDays = DateTime.DaysInMonth(start.Year, start.Month);
+                        dateRange.Add(new DateResult()
+                                      {
+                                          Year = start.Year,
+                                          Month = start.Month,
+                                          Days = startDays - start.Day + 1
+                                      });
+                    }
+                    else if (budget.YearMonth == end.ToString("yyyyMM"))
+                    {
+                        dateRange.Add(new DateResult()
+                                      {
+                                          Year = end.Year,
+                                          Month = end.Month,
+                                          Days = end.Day
+                                      });
+                    }
+                    else
+                    {
+                        dateRange.Add(new DateResult()
+                                      {
+                                          Year = currentMonth.Year,
+                                          Month = currentMonth.Month,
+                                          Days = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month)
+                                      });
                     }
                 }
+                // }
             }
         }
 
