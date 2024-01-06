@@ -61,7 +61,7 @@ public class BudgetService
                 var currentBudget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
                 if (currentBudget != null)
                 {
-                    var overlappingDays = new Period(start, end).OverlappingDays(new Period(currentBudget.FirstDay(), currentBudget.LastDay()));
+                    var overlappingDays = new Period(start, end).OverlappingDays(CreatePeriod(currentBudget));
 
                     totalAmount += overlappingDays * currentBudget.DailyAmount();
                 }
@@ -69,6 +69,11 @@ public class BudgetService
         }
 
         return totalAmount;
+    }
+
+    private static Period CreatePeriod(Budget currentBudget)
+    {
+        return new Period(currentBudget.FirstDay(), currentBudget.LastDay());
     }
 }
 
