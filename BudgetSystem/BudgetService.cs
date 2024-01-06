@@ -13,6 +13,11 @@ public class Period
 
     public int OverlappingDays(Period another)
     {
+        if (End < another.Start || Start > another.End)
+        {
+            return 0;
+        }
+
         var overlappingEnd = End < another.End
             ? End
             : another.End;
@@ -55,11 +60,12 @@ public class BudgetService
         }
         else
         {
-            var period = new Period(start, end);
-            foreach (var budget in budgets)
-            {
-                totalAmount += budget.OverlappingAmount(period);
-            }
+        }
+
+        var period = new Period(start, end);
+        foreach (var budget in budgets)
+        {
+            totalAmount += budget.OverlappingAmount(period);
         }
 
         return totalAmount;
