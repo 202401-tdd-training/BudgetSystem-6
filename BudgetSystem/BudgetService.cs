@@ -42,7 +42,8 @@ public class BudgetService
                     }
                     else if (budget.YearMonth == end.ToString("yyyyMM"))
                     {
-                        overlappingDays = end.Day;
+                        overlappingDays = (end - budget.FirstDay()).Days + 1;
+                        // overlappingDays = end.Day;
                     }
                     else if (budget.YearMonth == currentMonth.ToString("yyyyMM"))
                     {
@@ -82,5 +83,10 @@ public class Budget
         var year = int.Parse(YearMonth.Substring(0, 4));
         var month = int.Parse(YearMonth.Substring(4, 2));
         return DateTime.DaysInMonth(year, month);
+    }
+
+    public DateTime FirstDay()
+    {
+        return DateTime.ParseExact(YearMonth, "yyyyMM", null);
     }
 }
