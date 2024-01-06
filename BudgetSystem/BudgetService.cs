@@ -19,8 +19,6 @@ public class BudgetService
         var budgets = _budgetRepo.GetAll();
 
         var totalAmount = 0m;
-        // foreach (var budget in budgets)
-        // {
         if (start.Year == end.Year && start.Month == end.Month)
         {
             var currentBudget = budgets.SingleOrDefault(b => b.YearMonth == start.ToString("yyyyMM"));
@@ -38,8 +36,8 @@ public class BudgetService
                 var currentBudget = budgets.SingleOrDefault(b => b.YearMonth == currentMonth.ToString("yyyyMM"));
                 if (currentBudget != null)
                 {
-                    DateTime overlappingEnd = default;
-                    DateTime overlappingStart = default;
+                    DateTime overlappingEnd;
+                    DateTime overlappingStart;
                     if (currentBudget.YearMonth == start.ToString("yyyyMM"))
                     {
                         overlappingEnd = currentBudget.LastDay();
@@ -50,7 +48,7 @@ public class BudgetService
                         overlappingEnd = end;
                         overlappingStart = currentBudget.FirstDay();
                     }
-                    else if (currentBudget.YearMonth == currentMonth.ToString("yyyyMM"))
+                    else
                     {
                         overlappingEnd = currentBudget.LastDay();
                         overlappingStart = currentBudget.FirstDay();
@@ -62,7 +60,6 @@ public class BudgetService
                 }
             }
         }
-        // }
 
         return totalAmount;
     }
