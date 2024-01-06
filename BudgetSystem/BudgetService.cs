@@ -21,7 +21,7 @@ public class BudgetService
         var totalAmount = 0m;
         foreach (var budget in budgets)
         {
-            var days = DaysOfBudget(budget);
+            var days = budget.DaysOfBudget();
 
             if (start.Year == end.Year && start.Month == end.Month)
             {
@@ -58,13 +58,6 @@ public class BudgetService
 
         return totalAmount;
     }
-
-    private static int DaysOfBudget(Budget budget)
-    {
-        var year = int.Parse(budget.YearMonth.Substring(0, 4));
-        var month = int.Parse(budget.YearMonth.Substring(4, 2));
-        return DateTime.DaysInMonth(year, month);
-    }
 }
 
 public interface IBudgetRepo
@@ -76,4 +69,11 @@ public class Budget
 {
     public int Amount { get; set; }
     public string YearMonth { get; set; }
+
+    public int DaysOfBudget()
+    {
+        var year = int.Parse(YearMonth.Substring(0, 4));
+        var month = int.Parse(YearMonth.Substring(4, 2));
+        return DateTime.DaysInMonth(year, month);
+    }
 }
