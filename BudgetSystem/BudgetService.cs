@@ -37,17 +37,21 @@ public class BudgetService
                     int overlappingDays;
                     if (budget.YearMonth == start.ToString("yyyyMM"))
                     {
-                        // var startDays = DateTime.DaysInMonth(start.Year, start.Month);
-                        // overlappingDays = startDays - start.Day + 1;
-                        overlappingDays = (budget.LastDay() - start).Days + 1;
+                        var overlappingEnd = budget.LastDay();
+                        var overlappingStart = start;
+                        overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
                     }
                     else if (budget.YearMonth == end.ToString("yyyyMM"))
                     {
-                        overlappingDays = (end - budget.FirstDay()).Days + 1;
+                        var overlappingEnd = end;
+                        var overlappingStart = budget.FirstDay();
+                        overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
                     }
                     else if (budget.YearMonth == currentMonth.ToString("yyyyMM"))
                     {
-                        overlappingDays = (budget.LastDay() - budget.FirstDay()).Days + 1;
+                        var overlappingEnd = budget.LastDay();
+                        var overlappingStart = budget.FirstDay();
+                        overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
                     }
                     else
                     {
