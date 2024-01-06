@@ -14,19 +14,35 @@ public class BudgetService
         if (start > end)
             return 0.0m;
 
-        var data = _budgetRepo.GetAll()
-                              .Select(s =>
-                              {
-                                  var year = int.Parse(s.YearMonth.Substring(0, 4));
-                                  var month = int.Parse(s.YearMonth.Substring(4, 2));
-                                  var days = DateTime.DaysInMonth(year, month);
-                                  return new
-                                         {
-                                             Year = year,
-                                             Month = month,
-                                             DailyAmount = s.Amount / days
-                                         };
-                              });
+        var budgets = _budgetRepo.GetAll();
+        // var data = budgets
+        //     .Select(s =>
+        //     {
+        //         var year = int.Parse(s.YearMonth.Substring(0, 4));
+        //         var month = int.Parse(s.YearMonth.Substring(4, 2));
+        //         var days = DateTime.DaysInMonth(year, month);
+        //         return new
+        //                {
+        //                    Year = year,
+        //                    Month = month,
+        //                    DailyAmount = s.Amount / days
+        //                };
+        //     });
+        var data = new List<DailyAmountObject>();
+
+        foreach (var budget in budgets)
+        {
+            var year = int.Parse(budget.YearMonth.Substring(0, 4));
+            var month = int.Parse(budget.YearMonth.Substring(4, 2));
+            var days = DateTime.DaysInMonth(year, month);
+            var dailyAmountObject = new DailyAmountObject
+                                    {
+                                        Year = year,
+                                        Month = month,
+                                        DailyAmount = budget.Amount / days
+                                    };
+            data.Add(dailyAmountObject);
+        }
 
         var dayRange = GetMonthsWithDaysInRange(start, end);
 
@@ -86,6 +102,13 @@ public class BudgetService
 
         return result;
     }
+}
+
+public class DailyAmountObject
+{
+    public int DailyAmount { get; set; }
+    public int Month { get; set; }
+    public int Year { get; set; }
 }
 
 public interface IBudgetRepo
