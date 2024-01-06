@@ -13,13 +13,15 @@ public class Period
 
     public int OverlappingDays(Budget budget)
     {
-        var overlappingEnd = End < budget.LastDay()
+        var firstDay = budget.FirstDay();
+        var lastDay = budget.LastDay();
+        var overlappingEnd = End < lastDay
             ? End
-            : budget.LastDay();
+            : lastDay;
 
-        var overlappingStart = Start > budget.FirstDay()
+        var overlappingStart = Start > firstDay
             ? Start
-            : budget.FirstDay();
+            : firstDay;
 
         return (overlappingEnd - overlappingStart).Days + 1;
     }
