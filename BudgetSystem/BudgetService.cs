@@ -50,7 +50,7 @@ public class BudgetService
                     }
                     else
                     {
-                        continue;
+                        overlappingDays = 0;
                     }
 
                     totalAmount += overlappingDays * budget.DailyAmount();
