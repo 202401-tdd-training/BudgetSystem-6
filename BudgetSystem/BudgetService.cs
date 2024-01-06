@@ -31,6 +31,7 @@ public class BudgetService
         var dailyAmountObjects = new List<DailyAmountObject>();
 
         var dateRange = new List<DateResult>();
+        var totalAmount = 0m;
         foreach (var budget in budgets)
         {
             var year = int.Parse(budget.YearMonth.Substring(0, 4));
@@ -57,48 +58,53 @@ public class BudgetService
                 var nextMonthOfEnd = new DateTime(end.Year, end.Month, 1).AddMonths(1);
                 for (var currentMonth = start; currentMonth < nextMonthOfEnd; currentMonth.AddMonths(1))
                 {
-                    // if (currentMonth.Year == end.Year && currentMonth.Month == end.Month)
-                    //     break;
-
                     if (budget.YearMonth == start.ToString("yyyyMM"))
                     {
                         var startDays = DateTime.DaysInMonth(start.Year, start.Month);
-                        dateRange.Add(new DateResult()
-                                      {
-                                          Year = start.Year,
-                                          Month = start.Month,
-                                          Days = startDays - start.Day + 1
-                                      });
+                        var overlappingDays = startDays - start.Day + 1;
+                        totalAmount += overlappingDays * (budget.Amount / days);
+                        // dateRange.Add(new DateResult()
+                        //               {
+                        //                   Year = start.Year,
+                        //                   Month = start.Month,
+                        //                   Days = overlappingDays
+                        //               });
                     }
                     else if (budget.YearMonth == end.ToString("yyyyMM"))
                     {
-                        dateRange.Add(new DateResult()
-                                      {
-                                          Year = end.Year,
-                                          Month = end.Month,
-                                          Days = end.Day
-                                      });
+                        var overlappingDays = end.Day;
+                        totalAmount += overlappingDays * (budget.Amount / days);
+                        // dateRange.Add(new DateResult()
+                        //               {
+                        //                   Year = end.Year,
+                        //                   Month = end.Month,
+                        //                   Days = overlappingDays
+                        //               });
                     }
-                    else
+                    else if (budget.YearMonth == currentMonth.ToString("yyyyMM"))
                     {
-                        dateRange.Add(new DateResult()
-                                      {
-                                          Year = currentMonth.Year,
-                                          Month = currentMonth.Month,
-                                          Days = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month)
-                                      });
+                        var overlappingDays = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
+                        totalAmount += overlappingDays * (budget.Amount / days);
+
+                        // dateRange.Add(new DateResult()
+                        //               {
+                        //                   Year = currentMonth.Year,
+                        //                   Month = currentMonth.Month,
+                        //                   Days = overlappingDays
+                        //               });
                     }
                 }
-                // }
             }
         }
 
-        return dateRange.Join(dailyAmountObjects,
-                              day => new { day.Year, day.Month },
-                              dd => new { dd.Year, dd.Month },
-                              (day, dd) => dd.DailyAmount * day.Days
-                        )
-                        .Sum();
+        return totalAmount;
+
+        // return dateRange.Join(dailyAmountObjects,
+        //                       day => new { day.Year, day.Month },
+        //                       dd => new { dd.Year, dd.Month },
+        //                       (day, dd) => dd.DailyAmount * day.Days
+        //                 )
+        //                 .Sum();
     }
 
     private List<DateResult> GetMonthsWithDaysInRange(DateTime startDate, DateTime endDate)
