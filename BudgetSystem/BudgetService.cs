@@ -44,19 +44,16 @@ public class BudgetService
                         {
                             overlappingEnd = budget.LastDay();
                             overlappingStart = start;
-                            // overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
                         }
                         else if (budget.YearMonth == end.ToString("yyyyMM"))
                         {
                             overlappingEnd = end;
                             overlappingStart = budget.FirstDay();
-                            // overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
                         }
                         else if (budget.YearMonth == currentMonth.ToString("yyyyMM"))
                         {
                             overlappingEnd = budget.LastDay();
                             overlappingStart = budget.FirstDay();
-                            // overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
                         }
 
                         var overlappingDays = (overlappingEnd - overlappingStart).Days + 1;
