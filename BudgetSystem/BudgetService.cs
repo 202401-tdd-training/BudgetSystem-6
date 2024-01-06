@@ -54,17 +54,18 @@ public class BudgetService
             }
             else
             {
-                if (budget.YearMonth == start.ToString("yyyyMM"))
-                {
-                    var startDays = DateTime.DaysInMonth(start.Year, start.Month);
-                    dateRange.Add(new DateResult()
-                                  {
-                                      Year = start.Year,
-                                      Month = start.Month,
-                                      Days = startDays - start.Day + 1
-                                  });
-                }
-                else if (budget.YearMonth == end.ToString("yyyyMM"))
+                // if (budget.YearMonth == start.ToString("yyyyMM"))
+                // {
+                //     var startDays = DateTime.DaysInMonth(start.Year, start.Month);
+                //     dateRange.Add(new DateResult()
+                //                   {
+                //                       Year = start.Year,
+                //                       Month = start.Month,
+                //                       Days = startDays - start.Day + 1
+                //                   });
+                // }
+                // else
+                if (budget.YearMonth == end.ToString("yyyyMM"))
                 {
                     dateRange.Add(new DateResult()
                                   {
@@ -75,19 +76,30 @@ public class BudgetService
                 }
                 else
                 {
-                    var secondMonth = start.AddMonths(1);
-
-                    for (var date = secondMonth; date < end; date.AddMonths(1))
+                    for (var currentMonth = start; currentMonth < end; currentMonth.AddMonths(1))
                     {
-                        if (date.Year == end.Year && date.Month == end.Month)
+                        if (currentMonth.Year == end.Year && currentMonth.Month == end.Month)
                             break;
 
-                        dateRange.Add(new DateResult()
-                                      {
-                                          Year = date.Year,
-                                          Month = date.Month,
-                                          Days = DateTime.DaysInMonth(date.Year, date.Month)
-                                      });
+                        if (budget.YearMonth == start.ToString("yyyyMM"))
+                        {
+                            var startDays = DateTime.DaysInMonth(start.Year, start.Month);
+                            dateRange.Add(new DateResult()
+                                          {
+                                              Year = start.Year,
+                                              Month = start.Month,
+                                              Days = startDays - start.Day + 1
+                                          });
+                        }
+                        else
+                        {
+                            dateRange.Add(new DateResult()
+                                          {
+                                              Year = currentMonth.Year,
+                                              Month = currentMonth.Month,
+                                              Days = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month)
+                                          });
+                        }
                     }
                 }
             }
