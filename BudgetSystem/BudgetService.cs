@@ -54,10 +54,9 @@ public class BudgetService
             }
             else
             {
-                var startDays = DateTime.DaysInMonth(start.Year, start.Month);
-
                 if (budget.YearMonth == start.ToString("yyyyMM"))
                 {
+                    var startDays = DateTime.DaysInMonth(start.Year, start.Month);
                     dateRange.Add(new DateResult()
                                   {
                                       Year = start.Year,
