@@ -45,15 +45,23 @@ public class BudgetService
             dailyAmountObjects.Add(dailyAmountObject);
 
             if (start.Year == end.Year && start.Month == end.Month)
-                dateRange = new List<DateResult>()
-                            {
-                                new DateResult()
-                                {
-                                    Year = start.Year,
-                                    Month = start.Month,
-                                    Days = end.Day - start.Day + 1
-                                }
-                            };
+            {
+                if (budget.YearMonth == start.ToString("yyyyMM"))
+                {
+                    var overlappingDays = end.Day - start.Day + 1;
+                    return overlappingDays * (budget.Amount / days);
+                }
+
+                // dateRange = new List<DateResult>()
+                //             {
+                //                 new DateResult()
+                //                 {
+                //                     Year = start.Year,
+                //                     Month = start.Month,
+                //                     Days = overlappingDays
+                //                 }
+                //             };
+            }
             else
             {
                 var startDays = DateTime.DaysInMonth(start.Year, start.Month);
